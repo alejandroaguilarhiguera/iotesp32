@@ -5,14 +5,6 @@
 #include "SPIFFS.h"
 #include "syncTime.h"
 #include <ArduinoJson.h>
-  
-String Read_rootca = R"(-----BEGIN CERTIFICATE-----
------END CERTIFICATE-----)";
-
-String Read_cert = R"(-----BEGIN CERTIFICATE-----
------END CERTIFICATE-----)";
-String Read_privatekey = R"(-----BEGIN RSA PRIVATE KEY-----
------END RSA PRIVATE KEY-----)";
 
 #define BUFFER_LEN 256
 long lastMsg = 0;
@@ -108,36 +100,9 @@ void setup_mqtt() {
     return;
   }
 
-  
-  char* pRead_rootca;
-  pRead_rootca = (char *)malloc(sizeof(char) * (Read_rootca.length() + 1));
-  strcpy(pRead_rootca, Read_rootca.c_str());
-
-  char* pRead_cert;
-  pRead_cert = (char *)malloc(sizeof(char) * (Read_cert.length() + 1));
-  strcpy(pRead_cert, Read_cert.c_str());
-
-  char* pRead_privatekey;
-  pRead_privatekey = (char *)malloc(sizeof(char) * (Read_privatekey.length() + 1));
-  strcpy(pRead_privatekey, Read_privatekey.c_str());
-
-  Serial.println("================================================================================================");
-  Serial.println();
-  Serial.println("Root CA:");
-  Serial.write(pRead_rootca);
-  Serial.println("================================================================================================");
-  Serial.println();
-  Serial.println("Cert:");
-  Serial.write(pRead_cert);
-  Serial.println("================================================================================================");
-  Serial.println();
-  Serial.println("privateKey:");
-  Serial.write(pRead_privatekey);
-  Serial.println("================================================================================================");
-
-  espClient.setCACert(pRead_rootca);
-  espClient.setCertificate(pRead_cert);
-  espClient.setPrivateKey(pRead_privatekey);
+  espClient.setCACert(MQTT_ROOT_CA);
+  espClient.setCertificate(MQTT_CERT);
+  espClient.setPrivateKey(MQTT_PRIVATE_KEY);
 
   client.setServer(MQTT_HOST, MQTT_PORT);
   
