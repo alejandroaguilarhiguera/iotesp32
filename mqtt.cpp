@@ -17,6 +17,8 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Intentando conexión MQTT...");
     String clientId = "esp32_dev";
+    String thingName = THING_NAME;
+    String topic = "devices/" + thingName + "/commands";
 
     syncTime(); // Sincroniza la hora antes de intentar conectar
 
@@ -28,8 +30,11 @@ void reconnect() {
 
     if (client.connect(clientId.c_str())) {
       Serial.println("Conectado");
-      if (client.subscribe("commands")) {
-        Serial.println("Listening 'commands'");
+      if (client.subscribe(topic.c_str())) {
+        Serial.print("Listening ");
+        Serial.print(topic.c_str());
+        Serial.println();
+        
       } else {
         Serial.println("¡error to subscribe 'commands'!");
         client.disconnect(); 
