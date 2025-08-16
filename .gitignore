@@ -2,3 +2,4 @@
 *.crt
 *.pem
 secrets.h
+secrets*.h
